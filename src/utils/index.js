@@ -84,12 +84,12 @@ const buildUrl = config => {
 	let query = '',
 		url = freeleechEndpoint;
 
-	if(config.releaseYear != -1) {
+	if(config.releaseYear && config.releaseYear != -1) {
 		query += '&year=';
 		query += encodeURIComponent(config.releaseYear);
 	}
 
-	if(config.resolution != -1) {
+	if(config.resolution && config.resolution != -1) {
 		query += '&resolution=';
 		query += encodeURIComponent(config.resolution);
 	}
