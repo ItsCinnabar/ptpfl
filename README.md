@@ -35,6 +35,7 @@ Configuration options with defaults shown
   "maxAge": -1, // Maximum time in minutes since torrent was uploaded. See below note.
   "releaseYear": -1, // Filter by release year. Comma separated list of years.
   "resolution": -1, // Filter by resolution. Comma separated list of resolutions. See below for possible values.
+  "imdbRating": -1, // Filter by minimum IMDB rating.
   "downloadPath": "", // Path to download .torrent files to. Optional.
   "discordWebhookUrl": "" // Discord webhook URI. Optional.
 }

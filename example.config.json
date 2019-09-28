@@ -10,6 +10,7 @@
 	"maxAge": -1,
 	"releaseYear": -1,
 	"resolution": -1,
+	"imdbRating": -1,
 	"downloadPath": "",
 	"discordWebhookUrl": ""
 }

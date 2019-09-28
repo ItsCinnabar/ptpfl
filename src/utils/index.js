@@ -94,6 +94,11 @@ const buildUrl = config => {
 		query += encodeURIComponent(config.resolution);
 	}
 
+	if(config.imdbRating && config.imdbRating != -1) {
+		query += '&imdbrating=';
+		query += encodeURIComponent(config.imdbRating);
+	}
+
 	return query ? url += query : url;
 };
 
