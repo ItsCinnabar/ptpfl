@@ -5,7 +5,7 @@ const { validateConfig, fetchTorrents, torrentMatchesFilters, writeTorrentCache 
 module.exports = async function() {
 	try {
 		const config = await validateConfig(),
-			{ torrents, authKey, passKey } = await fetchTorrents(config.apiUser, config.apiKey);
+			{ torrents, authKey, passKey } = await fetchTorrents(config);
 
 		for (const torrent of torrents) {
 			if (torrentMatchesFilters(torrent, config)) {

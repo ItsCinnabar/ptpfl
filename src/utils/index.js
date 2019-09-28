@@ -80,19 +80,39 @@ const checkStatus = response => new Promise((resolve, reject) => {
 	}
 });
 
-exports.fetchTorrents = async (apiUser, apiKey) => {
-	if (!apiUser || !apiKey) {
+const buildUrl = config => {
+	let query = '',
+		url = freeleechEndpoint;
+
+	if(config.releaseYear != -1) {
+		query += '&year=';
+		query += encodeURIComponent(config.releaseYear);
+	}
+
+	if(config.resolution != -1) {
+		query += '&resolution=';
+		query += encodeURIComponent(config.resolution);
+	}
+
+	return query ? url += query : url;
+};
+
+exports.fetchTorrents = async config => {
+	if (!config.apiUser || !config.apiKey) {
 		console.log('Please ensure you\'ve added your ApiUser and ApiKey details from your PTP profile to the config file. See the example config file for details.');
 		process.exit();
 	}
 
 	try {
-		const response = await fetch(freeleechEndpoint, {
-			headers: {
-				'ApiUser': apiUser,
-				'ApiKey': apiKey
-			}
-		});
+		const endpoint = buildUrl(config),
+			response = await fetch(endpoint, {
+				headers: {
+					'ApiUser': config.apiUser,
+					'ApiKey': config.apiKey
+				}
+			});
+
+		console.log(response);
 
 		await checkStatus(response);
 
