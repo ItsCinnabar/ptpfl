@@ -117,8 +117,6 @@ exports.fetchTorrents = async config => {
 				}
 			});
 
-		console.log(response);
-
 		await checkStatus(response);
 
 		const json = await response.json(),
