@@ -1,10 +1,11 @@
 {
   "name": "ptp",
-  "version": "1.0.0",
+  "version": "2.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+	"schedule": "node src/utils/schedule-ptp.js"
   },
   "author": "",
   "license": "ISC",

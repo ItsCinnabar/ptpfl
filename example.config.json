@@ -11,6 +11,7 @@
 	"releaseYear": -1,
 	"resolution": -1,
 	"imdbRating": -1,
+	"interval": -1,
 	"downloadPath": "",
 	"discordWebhookUrl": ""
 }

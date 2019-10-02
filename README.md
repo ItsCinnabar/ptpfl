@@ -12,9 +12,11 @@ Add a `downloadPath` to `config.json` to have the torrents added to your torrent
 
 ### To run
 
-`npm start`
+`npm start` to run manually.
 
-### Discord notifications
+`npm run schedule` to run at an interval of `x` minutes as defined by the `interval` setting in `config.json`. This is helpful for running in screen or tmux.
+
+## Discord notifications
 
 Create a Webhook URL for a Discord channel and place it as `discordWebhookUrl` in your config file to be notified of grabbed torrents.
 
@@ -37,7 +39,8 @@ Configuration options with defaults shown
   "resolution": -1, // Filter by resolution. Comma separated list of resolutions. See below for possible values.
   "imdbRating": -1, // Filter by minimum IMDB rating.
   "downloadPath": "", // Path to download .torrent files to. Optional.
-  "discordWebhookUrl": "" // Discord webhook URI. Optional.
+  "discordWebhookUrl": "", // Discord webhook URI. Optional.
+  "interval": -1 // Interval, in minutes, that you'd like to run the script at. 
 }
 ```
 
