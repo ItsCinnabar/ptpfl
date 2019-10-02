@@ -36,11 +36,11 @@ Configuration options with defaults shown
   "maxsize": -1, // Maximum size in megabytes. Set to -1 for unlimited.
   "maxAge": -1, // Maximum time in minutes since torrent was uploaded. See below note.
   "releaseYear": -1, // Filter by release year. Comma separated list of years.
-  "resolution": -1, // Filter by resolution. Comma separated list of resolutions. See below for possible values.
   "imdbRating": -1, // Filter by minimum IMDB rating.
-  "codec": -1, // Filter by codex. See below for possible values.
-  "container": -1, // Filter by container. See below for possible values.
-  "source": -1, // Filter by source. See below for possible values.
+  "resolution": -1, // Filter by resolution. Comma separated list. See below for possible values.
+  "codec": -1, // Filter by codex. Comma separated list. See below for possible values.
+  "container": -1, // Filter by container. Comma separated list. See below for possible values.
+  "source": -1, // Filter by source. Comma separated list. See below for possible values.
   "downloadPath": "", // Path to download .torrent files to. Optional.
   "discordWebhookUrl": "", // Discord webhook URI. Optional.
   "interval": -1 // Interval, in minutes, that you'd like to run the script at. 
