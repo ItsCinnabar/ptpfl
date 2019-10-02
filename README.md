@@ -38,29 +38,32 @@ Configuration options with defaults shown
   "releaseYear": -1, // Filter by release year. Comma separated list of years.
   "resolution": -1, // Filter by resolution. Comma separated list of resolutions. See below for possible values.
   "imdbRating": -1, // Filter by minimum IMDB rating.
+  "codec": -1, // Filter by codex. See below for possible values.
+  "container": -1, // Filter by container. See below for possible values.
+  "source": -1, // Filter by source. See below for possible values.
   "downloadPath": "", // Path to download .torrent files to. Optional.
   "discordWebhookUrl": "", // Discord webhook URI. Optional.
   "interval": -1 // Interval, in minutes, that you'd like to run the script at. 
 }
 ```
 
-### maxAge
+## maxAge
 
 Set `maxAge` to filter freeleech torrents by upload date, in minutes. Be aware that some torrents are given freeleech status well after initial upload, & in this case those torrents may not be filtered if this config is set.
 
-### resolution
+## Filter Options
 
-Possible resolution values:
-
-* anysd
-* anyhd
-* anyhdplus
-* anyuhd
-* ntsc
-* pal
-* 480p
-* 576p
-* 720p
-* 1080i
-* 1080p
-* 2160p
+| Resolution | Codec | Container | Source |
+| --- | --- | --- | --- | 
+|anysd|XviD|AVI|CAM|
+|anyhd|DivX|MPG|TS|
+|anyhdp|H.264|MKV|R5|
+|anyuhd|x264|MP$|DVD-Screener|
+|ntsc|H.265|VOV IFO|VHS|
+|pal|x265|ISO|WEB|
+|480p|DVD5|m2ts|DVD|
+|576p|DVD9| |TV|
+|720p|BD25| |HDTV|
+|1080i|BD50| |HD-DVD|
+|1080p|BD66| |Blu-ray|
+|2160p|BD100| | |

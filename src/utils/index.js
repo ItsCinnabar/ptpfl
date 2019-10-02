@@ -99,6 +99,21 @@ const buildUrl = config => {
 		query += encodeURIComponent(config.imdbRating);
 	}
 
+	if(config.codec && config.codec != -1) {
+		query += '&codec=';
+		query += encodeURIComponent(config.codec);
+	}
+
+	if(config.container && config.container != -1) {
+		query += '&container=';
+		query += encodeURIComponent(config.container);
+	}
+
+	if(config.source && config.source != -1) {
+		query += '&source=';
+		query += encodeURIComponent(config.source);
+	}
+
 	return query ? url += query : url;
 };
 
