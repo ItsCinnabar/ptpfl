@@ -1,4 +1,5 @@
-const ptp = require('../index.js'),
+const getUserLocale = require('get-user-locale').getUserLocale,
+	ptp = require('../index.js'),
 	{ interval } = require('../../config.json');
 
 if(!interval) {
@@ -7,7 +8,7 @@ if(!interval) {
 }
 
 const run = () => {
-	console.log(`Script run at ${new Date().toLocaleTimeString('en-UK')}`);
+	console.log(`Script run at ${new Date().toLocaleTimeString(getUserLocale())}`);
 	ptp();
 };
 
