@@ -53,6 +53,8 @@ Set `maxAge` to filter freeleech torrents by upload date, in minutes. Be aware t
 
 ## Filter Options
 
+These options can be specified in a comma separated list within a string. For example: `"source": "cam,ts,dvd-screener"`.
+
 | Resolution | Codec | Container | Source |
 | --- | --- | --- | --- | 
 |anysd|XviD|AVI|CAM|
