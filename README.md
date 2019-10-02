@@ -2,7 +2,7 @@
 
 A node.js script that automates the downloading of PassThePopcorn freeleech torrents.
 
-### To install
+## To install
 
 `npm install`
 
@@ -10,7 +10,7 @@ Copy `example.config.json` to `config.json` and fill in your apiUser and apiKey 
 
 Add a `downloadPath` to `config.json` to have the torrents added to your torrent client's watch directory.
 
-### To run
+## To run
 
 `npm start` to run manually.
 
@@ -20,7 +20,7 @@ Add a `downloadPath` to `config.json` to have the torrents added to your torrent
 
 Create a Webhook URL for a Discord channel and place it as `discordWebhookUrl` in your config file to be notified of grabbed torrents.
 
-### Configuration
+## Configuration
 
 Configuration options with defaults shown
 
@@ -44,11 +44,11 @@ Configuration options with defaults shown
 }
 ```
 
-#### maxAge
+### maxAge
 
 Set `maxAge` to filter freeleech torrents by upload date, in minutes. Be aware that some torrents are given freeleech status well after initial upload, & in this case those torrents may not be filtered if this config is set.
 
-#### resolution
+### resolution
 
 Possible resolution values:
 
