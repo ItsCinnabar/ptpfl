@@ -17,6 +17,7 @@ const getConfig = () => {
 	} catch(error) {
 		if (error.message.includes('Cannot find module')) {
 			console.log('Please ensure you\'ve created and filled in the config.json file');
+			console.log('You may copy example.config.json to config.json and use that as a template.');
 			process.exit();
 		}
 
