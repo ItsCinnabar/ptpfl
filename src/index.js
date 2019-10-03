@@ -1,4 +1,4 @@
-const { validateConfig, fetchTorrents, torrentMatchesFilters, writeTorrentCache } = require('./utils'),
+const { validateConfig, fetchTorrents, writeTorrentCache } = require('./utils'),
 	sendDiscordNotification = require('./modules/discord'),
 	downloadTorrent = require('./modules/download');
 
