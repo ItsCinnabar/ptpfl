@@ -8,11 +8,9 @@ module.exports = async function() {
 			{ torrents, authKey, passKey } = await fetchTorrents(config);
 
 		for (const torrent of torrents) {
-			if (torrentMatchesFilters(torrent, config)) {
-				await downloadTorrent({ torrent, authKey, passKey }, config);
+			await downloadTorrent({ torrent, authKey, passKey }, config);
 
-				await sendDiscordNotification({ torrent, authKey, passKey }, config);
-			}
+			await sendDiscordNotification({ torrent, authKey, passKey }, config);
 		}
 
 		writeTorrentCache(torrents);

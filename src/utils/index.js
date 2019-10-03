@@ -70,19 +70,6 @@ exports.writeTorrentCache = torrents => {
 	});
 };
 
-const getTorrentsFromResponse = data => {
-	return data.Movies.map(group => {
-		const torrent = group.Torrents[0];
-
-		torrent.Seeders = Number(torrent.Seeders);
-		torrent.Leechers = Number(torrent.Leechers);
-		torrent.Size = Number(torrent.Size);
-		torrent.GroupId = group.GroupId;
-
-		return torrent;
-	});
-};
-
 const checkStatus = response => new Promise((resolve, reject) => {
 	if (response.status >= 200 && response.status < 300) {
 		resolve(response);
@@ -130,34 +117,6 @@ const buildUrl = config => {
 	return query ? url += query : url;
 };
 
-exports.fetchTorrents = async config => {
-	if (!config.apiUser || !config.apiKey) {
-		console.log('Please ensure you\'ve added your ApiUser and ApiKey details from your PTP profile to the config file. See the example config file for details.');
-		process.exit();
-	}
-
-	try {
-		const endpoint = buildUrl(config),
-			response = await fetch(endpoint, {
-				headers: {
-					'ApiUser': config.apiUser,
-					'ApiKey': config.apiKey
-				}
-			});
-
-		await checkStatus(response);
-
-		const json = await response.json(),
-			torrents = getTorrentsFromResponse(json);
-
-		return { torrents, authKey: json.AuthKey, passKey: json.PassKey };
-	} catch(error) {
-
-		console.log(error);
-		process.exit();
-	}
-};
-
 const isOlderThan = (date, minutes) => {
 	const earliest = 1000 * minutes * 60,
 		time = Date.now() - earliest;
@@ -165,7 +124,7 @@ const isOlderThan = (date, minutes) => {
 	return new Date(date) < time;
 };
 
-exports.torrentMatchesFilters = (torrent, config) => {
+const torrentMatchesFilters = (torrent, config) => {
 	let isMatch = true;
 
 	const cache = getCache();
@@ -206,6 +165,47 @@ exports.torrentMatchesFilters = (torrent, config) => {
 	}
 
 	return isMatch;
+};
+
+const getTorrentsFromResponse = data => {
+	return data.Movies.map(group => {
+		const torrent = group.Torrents[0];
+
+		torrent.Seeders = Number(torrent.Seeders);
+		torrent.Leechers = Number(torrent.Leechers);
+		torrent.Size = Number(torrent.Size);
+		torrent.GroupId = group.GroupId;
+
+		return torrent;
+	}).filter(torrentMatchesFilters);
+};
+
+exports.fetchTorrents = async config => {
+	if (!config.apiUser || !config.apiKey) {
+		console.log('Please ensure you\'ve added your ApiUser and ApiKey details from your PTP profile to the config file. See the example config file for details.');
+		process.exit();
+	}
+
+	try {
+		const endpoint = buildUrl(config),
+			response = await fetch(endpoint, {
+				headers: {
+					'ApiUser': config.apiUser,
+					'ApiKey': config.apiKey
+				}
+			});
+
+		await checkStatus(response);
+
+		const json = await response.json(),
+			torrents = getTorrentsFromResponse(json);
+
+		return { torrents, authKey: json.AuthKey, passKey: json.PassKey };
+	} catch(error) {
+
+		console.log(error);
+		process.exit();
+	}
 };
 
 exports.formatBytes = bytes =>{
