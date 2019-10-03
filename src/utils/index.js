@@ -11,7 +11,8 @@ const configPath = path.join(__dirname, '../../config.json'),
 const getConfig = () => {
 	try {
 		const config = importFresh(configPath);
-		return JSON.parse(config);
+		JSON.parse(JSON.stringify(config));
+		return config;
 	} catch(error) {
 		if (error.message.includes('Cannot find module')) {
 			console.log('Please ensure you\'ve created and filled in the config.json file');
@@ -48,7 +49,7 @@ exports.validateConfig = async () => {
 const getCache = () => {
 	try {
 		const cache = importFresh(cachePath);
-		return JSON.parse(cache);
+		return JSON.parse(JSON.stringify(cache));
 	} catch(error) {
 		if (error.message.includes('Cannot find module') || error.message.includes('Unexpected end of JSON input')) {
 			return { freeleech: [] };
