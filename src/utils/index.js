@@ -53,6 +53,7 @@ const getCache = () => {
 		if (error.message.includes('Cannot find module') || error.message.includes('Unexpected end of JSON input')) {
 			return { freeleech: [] };
 		}
+
 		console.log('Cache has become corrupted. Please remove the data/cache.json file and try again.');
 		process.exit();
 	}
