@@ -10,18 +10,23 @@ const configPath = path.join(__dirname, '../../config.json'),
 
 const getConfig = () => {
 	try {
-		const config = importFresh(configPath);
-		return JSON.parse(config);
+		const config = importFresh(configPath),
+			json = JSON.parse(config);
+
+		return json;
 	} catch(error) {
 		if (error.message.includes('Cannot find module')) {
 			console.log('Please ensure you\'ve created and filled in the config.json file');
 			process.exit();
 		}
 
-		if (error.message.includes('Unexpected token')) {
-			console.log('Config.json contains invalid JSON. Please check and try again');
+		if (error.message.includes('Unexpected token') || error.message.includes('Unexpected end of JSON input')) {
+			console.log('Config.json contains invalid JSON. Please check and try again.');
 			process.exit();
 		}
+
+		console.log(error);
+		process.exit();
 	}
 };
 
