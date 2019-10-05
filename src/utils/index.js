@@ -124,7 +124,7 @@ const isOlderThan = (date, minutes) => {
 	return new Date(date) < time;
 };
 
-const torrentMatchesFilters = (torrent, config) => {
+exports.torrentMatchesFilters = (torrent, config) => {
 	let isMatch = true;
 
 	const cache = getCache();
@@ -177,7 +177,7 @@ const getTorrentsFromResponse = data => {
 		torrent.GroupId = group.GroupId;
 
 		return torrent;
-	}).filter(torrentMatchesFilters);
+	});
 };
 
 exports.fetchTorrents = async config => {
