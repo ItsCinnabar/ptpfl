@@ -22,7 +22,7 @@ Create a Webhook URL for a Discord channel and place it as `discordWebhookUrl` i
 
 ## Configuration
 
-Configuration options with defaults shown
+Configuration options with defaults shown:
 
 ```javascript
 {
@@ -53,7 +53,7 @@ Set `maxAge` to filter freeleech torrents by upload date, in minutes. Be aware t
 
 ## Filter Options
 
-These options can be specified in a comma separated list within a string. For example: `"source": "cam,ts,dvd-screener"`.
+These options can be specified in a comma separated list within a string. For example: `"source": "cam,ts,dvd-screener"` or `"source": "cam"`.
 
 | Resolution | Codec | Container | Source |
 | --- | --- | --- | --- | 
