@@ -2,8 +2,8 @@ const getUserLocale = require('get-user-locale').getUserLocale,
 	ptp = require('../index.js'),
 	{ interval } = require('../../config.json');
 
-if(!interval) {
-	console.log('To schedule this tool please provide an interval in your config.json file');
+if(!interval || interval === -1) {
+	console.log('To schedule this tool please provide a positive integer as an interval in your config.json file');
 	process.exit();
 }
 
