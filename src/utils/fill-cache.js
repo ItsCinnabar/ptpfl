@@ -1,5 +1,4 @@
-const ptp = require('../index.js'),
-	{ validateConfig, fetchTorrents, writeTorrentCache } = require('./index.js');
+const { validateConfig, fetchTorrents, writeTorrentCache } = require('./index.js');
 
 const run = async () => {
 	try {
