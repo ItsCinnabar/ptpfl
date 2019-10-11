@@ -7,6 +7,8 @@ const run = async () => {
 			{ torrents } = await fetchTorrents(config);
 
 		writeTorrentCache(torrents);
+
+		torrents.forEach(torrent => console.log(`\nCached: ${torrent.ReleaseName}`));
 	} catch(error) {
 		console.log(error);
 	}
