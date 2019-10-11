@@ -20,7 +20,7 @@ Add a `downloadPath` to `config.json` to have the torrents added to your torrent
 
 `npm run schedule` to run at an interval of `x` minutes as defined by the `interval` setting in `config.json`. This is helpful for running in screen or tmux.
 
-`npm run fill-cache` to fill the freeleech cache with currently available freeleech torrents. This is helpful if you'd like to start downloading future freeleech without flooding your torrent client with past freeleech. This caches all torrents; even those not filtered by your config.
+`npm run fill-cache` to fill the freeleech cache with currently available freeleech torrents. This is helpful if you'd like to start downloading future freeleech without flooding your torrent client with past freeleech. This caches all torrents; including those not filtered by your config.
 
 ## Discord notifications
 
