@@ -2,6 +2,8 @@
 
 A node.js script that automates the downloading of PassThePopcorn freeleech torrents.
 
+Feature requests welcome. Feel free to create a [new issue](https://github.com/ergusto/ptp/issues/new) explaining the feature you'd like to see implemented into the package.
+
 ## To install
 
 `npm install`
