@@ -62,7 +62,7 @@ const getCache = () => {
 
 exports.writeTorrentCache = torrents => {
 	const cache = {
-		freeleech: torrents.map(torrent => torrent.Id)
+		freeleech: torrents.map(torrent => ({ id: torrent.Id, releaseName: torrent.ReleaseName }))
 	};
 
 	fs.writeFileSync(cachePath, JSON.stringify(cache), {
@@ -124,6 +124,8 @@ const isOlderThan = (date, minutes) => {
 	return new Date(date) < time;
 };
 
+const existsInCache = (cache, torrent) => cache.freeleech.find(cached => cached.releaseName == torrent.ReleaseName);
+
 exports.torrentMatchesFilters = (torrent, config) => {
 	let isMatch = true;
 
@@ -132,7 +134,7 @@ exports.torrentMatchesFilters = (torrent, config) => {
 	const minSize = config.minsize === -1 ? -1 : Number(config.minsize) * 1024 * 1024,
 		maxSize = config.maxsize === -1 ? -1 : Number(config.maxsize) * 1024 * 1024;
 
-	if (cache.freeleech.includes(torrent.Id)) {
+	if (existsInCache(cache, torrent)) {
 		return false;
 	}
 
@@ -177,7 +179,7 @@ const getTorrentsFromResponse = data => {
 		torrent.GroupId = group.GroupId;
 
 		return torrent;
-	});
+	}).filter(torrent => torrent.FreeleechType == 'Freeleech');
 };
 
 exports.fetchTorrents = async config => {
