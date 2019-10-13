@@ -1,6 +1,6 @@
 const { validateConfig, fetchTorrents, writeTorrentCache } = require('./index.js');
 
-const run = async () => {
+(async () => {
 	try {
 		const config = await validateConfig(),
 			{ torrents } = await fetchTorrents(config);
@@ -11,6 +11,4 @@ const run = async () => {
 	} catch(error) {
 		console.log(error);
 	}
-};
-
-run();
+})();
