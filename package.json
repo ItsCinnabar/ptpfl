@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "schedule": "node src/utils/schedule-ptp.js",
+    "schedule": "node src/utils/schedule.js",
 	"fill-cache": "node src/utils/fill-cache.js"
   },
   "author": "",
