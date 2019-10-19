@@ -12,7 +12,7 @@ Feature requests welcome. Feel free to create a [new issue](https://github.com/e
 
 [Install Node and NPM](https://tecadmin.net/install-nodejs-with-nvm/) (root not required).
 
-### To install
+### Install
 
 `npm install` within the project directory.
 
@@ -22,7 +22,7 @@ Copy `example.config.json` to `config.json` and fill in your apiUser and apiKey 
 
 Add a `downloadPath` to `config.json` to have the torrents added to your torrent client's watch directory.
 
-### To run
+### Run
 
 `npm start` to run manually.
 
