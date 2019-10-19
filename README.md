@@ -30,10 +30,6 @@ Add a `downloadPath` to `config.json` to have the torrents added to your torrent
 
 `npm run fill-cache` to fill the freeleech cache with currently available freeleech torrents. This is helpful if you'd like to start downloading future freeleech without flooding your torrent client with past freeleech. This caches all torrents; including those not filtered by your config.
 
-## Discord notifications
-
-Create a Webhook URL for a Discord channel and place it as `discordWebhookUrl` in your config file to be notified of grabbed torrents.
-
 ## Configuration
 
 Configuration options with defaults shown:
@@ -61,11 +57,15 @@ Configuration options with defaults shown:
 }
 ```
 
-## maxAge
+### maxAge
 
 Set `maxAge` to filter freeleech torrents by upload date, in minutes. Be aware that some torrents are given freeleech status well after initial upload, & in this case those torrents may not be filtered if this config is set.
 
-## Filter Options
+### Discord notifications
+
+Create a Webhook URL for a Discord channel and place it as `discordWebhookUrl` in your config file to be notified of grabbed torrents.
+
+### Filter Options
 
 These options can be specified in a comma separated list within a string. For example: `"source": "cam,ts,dvd-screener"` or `"source": "cam"`.
 
