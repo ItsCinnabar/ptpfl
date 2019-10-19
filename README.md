@@ -6,15 +6,23 @@ A node.js script that automates the downloading of PassThePopcorn freeleech torr
 
 Feature requests welcome. Feel free to create a [new issue](https://github.com/ergusto/ptp/issues/new) explaining the feature you'd like to see implemented into the package.
 
-## To install
+## Usage
 
-`npm install`
+### Prerequisites
+
+[Install Node and NPM](https://tecadmin.net/install-nodejs-with-nvm/) (root not required).
+
+### To install
+
+`npm install` within the project directory.
+
+### Setup
 
 Copy `example.config.json` to `config.json` and fill in your apiUser and apiKey credentials from your user profile.
 
 Add a `downloadPath` to `config.json` to have the torrents added to your torrent client's watch directory.
 
-## To run
+### To run
 
 `npm start` to run manually.
 
