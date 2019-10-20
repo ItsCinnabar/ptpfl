@@ -34,11 +34,6 @@ exports.validateConfig = async () => {
 	const config = getConfig(),
 		error = 'Specified downloadPath directory does not exist. Please check your config.';
 
-	if (!config.filters) {
-		console.log('The format of config.json has changed. Please see example.config.json for details and make changes accordingly');
-		process.exit();
-	}
-
 	if (!config.downloadPath) return config;
 
 	const folderExists = await directoryExists(config.downloadPath);
@@ -109,17 +104,17 @@ const buildUrl = (config, ignoreFilters) => {
 	}
 
 	if (config.codec && config.codec != -1) {
-		query += '&codec=';
+		query += '&format=';
 		query += encodeURIComponent(config.codec);
 	}
 
 	if (config.container && config.container != -1) {
-		query += '&container=';
+		query += '&encoding=';
 		query += encodeURIComponent(config.container);
 	}
 
 	if (config.source && config.source != -1) {
-		query += '&source=';
+		query += '&media=';
 		query += encodeURIComponent(config.source);
 	}
 
