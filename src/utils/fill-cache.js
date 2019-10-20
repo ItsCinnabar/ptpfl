@@ -3,7 +3,7 @@ const { validateConfig, fetchTorrents, writeTorrentCache } = require('./index.js
 (async () => {
 	try {
 		const config = await validateConfig(),
-			{ torrents } = await fetchTorrents(config);
+			{ torrents } = await fetchTorrents(config, true);
 
 		writeTorrentCache(torrents);
 

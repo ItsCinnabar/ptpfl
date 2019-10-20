@@ -34,6 +34,11 @@ exports.validateConfig = async () => {
 	const config = getConfig(),
 		error = 'Specified downloadPath directory does not exist. Please check your config.';
 
+	if (!config.filters) {
+		console.log('The format of config.json has changed. Please see example.config.json for details and make changes accordingly');
+		process.exit();
+	}
+
 	if (!config.downloadPath) return config;
 
 	const folderExists = await directoryExists(config.downloadPath);
@@ -82,36 +87,38 @@ const checkStatus = response => new Promise((resolve, reject) => {
 	}
 });
 
-const buildUrl = config => {
+const buildUrl = (config, ignoreFilters) => {
 	let query = '',
 		url = freeleechEndpoint;
 
-	if(config.releaseYear && config.releaseYear != -1) {
+	if (ignoreFilters) return url;
+
+	if (config.releaseYear && config.releaseYear != -1) {
 		query += '&year=';
 		query += encodeURIComponent(config.releaseYear);
 	}
 
-	if(config.resolution && config.resolution != -1) {
+	if (config.resolution && config.resolution != -1) {
 		query += '&resolution=';
 		query += encodeURIComponent(config.resolution);
 	}
 
-	if(config.imdbRating && config.imdbRating != -1) {
+	if (config.imdbRating && config.imdbRating != -1) {
 		query += '&imdbrating=';
 		query += encodeURIComponent(config.imdbRating);
 	}
 
-	if(config.codec && config.codec != -1) {
+	if (config.codec && config.codec != -1) {
 		query += '&codec=';
 		query += encodeURIComponent(config.codec);
 	}
 
-	if(config.container && config.container != -1) {
+	if (config.container && config.container != -1) {
 		query += '&container=';
 		query += encodeURIComponent(config.container);
 	}
 
-	if(config.source && config.source != -1) {
+	if (config.source && config.source != -1) {
 		query += '&source=';
 		query += encodeURIComponent(config.source);
 	}
@@ -166,6 +173,39 @@ exports.torrentMatchesFilters = (torrent, config) => {
 		isMatch = false;
 	}
 
+	if (isMatch) {
+		return true;
+	}
+
+	if (config.releaseNameFilters) {
+		if (config.releaseNameFilters.regexes && config.releaseNameFilters.regexes.length) {
+			for (const expression of config.releaseNameFilters.regexes) {
+				try {
+					const regex = new RegExp(expression);
+
+					if (regex.test(torrent.ReleaseName)) {
+						isMatch = true;
+					}
+				} catch(error) {
+					console.log(`The regular expression ${expression} is not valid. Please modify and try again.`);
+					process.exit();
+				}
+			}
+		}
+
+		if (config.releaseNameFilters.strings && config.releaseNameFilters.strings.length) {
+			const releaseName = torrent.ReleaseName.toLowerCase();
+
+			for (let string of config.releaseNameFilters.strings) {
+				string = string.toLowerCase();
+
+				if (releaseName.includes(string)) {
+					isMatch = true;
+				}
+			}
+		}
+	}
+
 	return isMatch;
 };
 
@@ -182,14 +222,14 @@ const getTorrentsFromResponse = data => {
 	}).filter(torrent => torrent.FreeleechType == 'Freeleech');
 };
 
-exports.fetchTorrents = async config => {
+exports.fetchTorrents = async (config, ignoreFilters) => {
 	if (!config.apiUser || !config.apiKey) {
 		console.log('Please ensure you\'ve added your ApiUser and ApiKey details from your PTP profile to the config file. See the example config file for details.');
 		process.exit();
 	}
 
 	try {
-		const endpoint = buildUrl(config),
+		const endpoint = buildUrl(config, ignoreFilters),
 			response = await fetch(endpoint, {
 				headers: {
 					'ApiUser': config.apiUser,
