@@ -42,11 +42,6 @@ exports.validateConfig = async () => {
 		process.exit();
 	}
 
-	if (!config.releaseName) {
-		console.log('config.json filtering formats have changed. Please check example.config.json and ensure config.json contains the same keys and format.');
-		process.exit();
-	}
-
 	return config;
 };
 
