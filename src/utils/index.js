@@ -293,11 +293,7 @@ exports.fetchTorrents = async (config, ignoreFilters) => {
 			passKey = json.PassKey;
 
 			if (pageNumber < totalPages) {
-				console.log(json);
 				return await fetchTorrents(pageNumber + 1);
-			} else {
-				console.log('totalResults', json.TotalResults);
-				console.log('actualResults', torrents.length);
 			}
 		})(1);
 
