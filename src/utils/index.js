@@ -215,6 +215,8 @@ exports.torrentMatchesFilters = (torrent, config) => {
 		}
 	}
 
+	return isMatch;
+
 	if (config.releaseName) {
 		if (config.releaseName.regexes && config.releaseName.regexes.length) {
 			if (config.releaseName.regexes.find(expression => {
