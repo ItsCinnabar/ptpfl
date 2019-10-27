@@ -5,8 +5,7 @@ const path = require('path'),
 	directoryExists = require('directory-exists');
 
 const configPath = path.join(__dirname, '../../config.json'),
-	cachePath = path.join(__dirname, '../../data/cache.json'),
-	freeleechEndpoint = 'https://passthepopcorn.me/torrents.php?freetorrent=1&grouping=0&json=noredirect';
+	cachePath = path.join(__dirname, '../../data/cache.json');
 
 const getConfig = () => {
 	try {
@@ -40,6 +39,11 @@ exports.validateConfig = async () => {
 
 	if (!folderExists) {
 		console.log(error);
+		process.exit();
+	}
+
+	if (!config.releaseName) {
+		console.log('config.json filtering formats have changed. Please check example.config.json and ensure config.json contains the same keys and format.');
 		process.exit();
 	}
 
@@ -82,45 +86,6 @@ const checkStatus = response => new Promise((resolve, reject) => {
 	}
 });
 
-const buildUrl = (config, ignoreFilters) => {
-	let query = '',
-		url = freeleechEndpoint;
-
-	if (ignoreFilters) return url;
-
-	if (config.releaseYear && config.releaseYear != -1) {
-		query += '&year=';
-		query += encodeURIComponent(config.releaseYear);
-	}
-
-	if (config.resolution && config.resolution != -1) {
-		query += '&resolution=';
-		query += encodeURIComponent(config.resolution);
-	}
-
-	if (config.imdbRating && config.imdbRating != -1) {
-		query += '&imdbrating=';
-		query += encodeURIComponent(config.imdbRating);
-	}
-
-	if (config.codec && config.codec != -1) {
-		query += '&format=';
-		query += encodeURIComponent(config.codec);
-	}
-
-	if (config.container && config.container != -1) {
-		query += '&encoding=';
-		query += encodeURIComponent(config.container);
-	}
-
-	if (config.source && config.source != -1) {
-		query += '&media=';
-		query += encodeURIComponent(config.source);
-	}
-
-	return query ? url += query : url;
-};
-
 const isOlderThan = (date, minutes) => {
 	const earliest = 1000 * minutes * 60,
 		time = Date.now() - earliest;
@@ -140,63 +105,148 @@ exports.torrentMatchesFilters = (torrent, config) => {
 		return false;
 	}
 
-	if (config.minSeeders !== -1 && torrent.Seeders <= config.minSeeders) {
-		isMatch = false;
+	if (config.minSeeders !== -1) {
+		if (torrent.Seeders >= config.minSeeders) {
+			isMatch = true;
+		} else {
+			return false;
+		}
 	}
 
-	if (config.maxSeeders !== -1 && torrent.Seeders >= config.maxSeeders) {
-		isMatch = false;
+	if (config.maxSeeders !== -1) {
+		if(torrent.Seeders <= config.maxSeeders) {
+			isMatch = true;
+		} else {
+			return false;
+		}
 	}
 
-	if (config.minLeechers !== -1 && torrent.Leechers <= config.minLeechers) {
-		isMatch = false;
+	if (config.minLeechers !== -1) {
+		if(torrent.Leechers >= config.minLeechers) {
+			isMatch = true;
+		} else {
+			return false;
+		}
 	}
 
-	if (config.maxLeechers !== -1 && torrent.Leechers >= config.maxLeechers) {
-		isMatch = false;
+	if (config.maxLeechers !== -1) {
+		if(torrent.Leechers <= config.maxLeechers) {
+			isMatch = true;
+		} else {
+			return false;
+		}
 	}
 
-	if (minSize !== -1 && torrent.Size <= minSize) {
-		isMatch = false;
+	if (config.minSize !== -1) {
+		if(torrent.Size >= minSize) {
+			isMatch = true;
+		} else {
+			return false;
+		}
 	}
 
-	if (maxSize !== -1 && torrent.Size >= maxSize) {
-		isMatch = false;
+	if (config.maxSize !== -1) {
+		if(torrent.Size <= maxSize) {
+			isMatch = true;
+		} else {
+			return false;
+		}
 	}
 
-	if (config.maxAge !== -1 && isOlderThan(torrent.UploadTime, config.maxAge)) {
-		isMatch = false;
+	if (config.maxAge !== -1) {
+		if(!isOlderThan(torrent.UploadTime, config.maxAge)) {
+			isMatch = true;
+		} else {
+			return false;
+		}
 	}
 
-	if (isMatch) {
-		return true;
+	if (config.resolution !== -1 && config.resolution.length) {
+		const resolutions = config.resolution.includes(',') ? config.resolution.split(',') : [config.resolution];
+
+		if (resolutions.find(resolution => resolution.trim().toLowerCase() === torrent.Resolution.toLowerCase())) {
+			isMatch = true;
+		} else {
+			return false;
+		}
 	}
 
-	if (config.releaseNameFilters) {
-		if (config.releaseNameFilters.regexes && config.releaseNameFilters.regexes.length) {
-			for (const expression of config.releaseNameFilters.regexes) {
+	if (config.codec !== -1 && config.codec.length) {
+		const codecs = config.codec.includes(',') ? config.codec.split(',') : [config.codec];
+
+		if (codecs.find(codec => codec.trim().toLowerCase() === torrent.Codec.toLowerCase())) {
+			isMatch = true;
+		} else {
+			return false;
+		}
+	}
+
+	if (config.container !== -1 && config.container.length) {
+		const containers = config.container.includes(',') ? config.container.split(',') : [config.container];
+
+		if (containers.find(container => container.trim().toLowerCase() === torrent.Container.toLowerCase())) {
+			isMatch = true;
+		} else {
+			return false;
+		}
+	}
+
+	if (config.source !== -1 && config.source.length) {
+		const sources = config.source.includes(',') ? config.source.split(',') : [config.source];
+
+		if (sources.find(source => source.trim().toLowerCase() === torrent.Source.toLowerCase())) {
+			isMatch = true;
+		} else {
+			return false;
+		}
+	}
+
+	if (config.releaseGroup !== -1 && config.releaseGroup.length) {
+		const releaseGroups = config.releaseGroup.includes(',') ? config.releaseGroup.split(',') : [config.releaseGroup];
+
+		if (torrent.ReleaseGroup !== null) {
+			if (releaseGroups.find(releaseGroup => releaseGroup.trim().toLowerCase() === torrent.ReleaseGroup.toLowerCase())) {
+				isMatch = true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	if (config.releaseName) {
+		if (config.releaseName.regexes && config.releaseName.regexes.length) {
+			if (config.releaseName.regexes.find(expression => {
 				try {
-					const regex = new RegExp(expression);
+					const regex = new RegExp(expression, 'gi');
 
-					if (regex.test(torrent.ReleaseName)) {
-						isMatch = true;
-					}
+					console.log(regex.test(torrent.ReleaseName));
+
+					return regex.test(torrent.ReleaseName);
 				} catch(error) {
-					console.log(`The regular expression ${expression} is not valid. Please modify and try again.`);
+					console.log(error);
+					console.log(`\nThe regular expression ${expression} is not valid. Please modify and try again.`);
 					process.exit();
 				}
+			})) {
+				isMatch = true;
+			} else {
+				return false;
 			}
 		}
 
-		if (config.releaseNameFilters.strings && config.releaseNameFilters.strings.length) {
+		if (config.releaseName.strings && config.releaseName.strings.length) {
 			const releaseName = torrent.ReleaseName.toLowerCase();
 
-			for (let string of config.releaseNameFilters.strings) {
+			if (config.releaseName.strings.find(string => {
 				string = string.toLowerCase();
 
-				if (releaseName.includes(string)) {
-					isMatch = true;
-				}
+				return releaseName.includes(string);
+			})) {
+				isMatch = true;
+			} else {
+				return false;
 			}
 		}
 	}
@@ -218,26 +268,43 @@ const getTorrentsFromResponse = data => {
 };
 
 exports.fetchTorrents = async (config, ignoreFilters) => {
+	let authKey, passKey, torrents = [];
+
 	if (!config.apiUser || !config.apiKey) {
 		console.log('Please ensure you\'ve added your ApiUser and ApiKey details from your PTP profile to the config file. See the example config file for details.');
 		process.exit();
 	}
 
 	try {
-		const endpoint = buildUrl(config, ignoreFilters),
-			response = await fetch(endpoint, {
-				headers: {
-					'ApiUser': config.apiUser,
-					'ApiKey': config.apiKey
-				}
-			});
+		await (async function fetchTorrents(pageNumber) {
+			const endpoint = `https://passthepopcorn.me/torrents.php?freetorrent=1&grouping=0&json=noredirect&page=${pageNumber}`,
+				response = await fetch(endpoint, {
+					headers: {
+						'ApiUser': config.apiUser,
+						'ApiKey': config.apiKey
+					}
+				});
 
-		await checkStatus(response);
+			await checkStatus(response);
 
-		const json = await response.json(),
-			torrents = getTorrentsFromResponse(json);
+			const json = await response.json(),
+				totalPages = Math.ceil(Number(json.TotalResults) / 50);
 
-		return { torrents, authKey: json.AuthKey, passKey: json.PassKey };
+			torrents = torrents.concat(getTorrentsFromResponse(json));
+
+			authKey = json.AuthKey;
+			passKey = json.PassKey;
+
+			if (pageNumber < totalPages) {
+				console.log(json);
+				return await fetchTorrents(pageNumber + 1);
+			} else {
+				console.log('totalResults', json.TotalResults);
+				console.log('actualResults', torrents.length);
+			}
+		})(1);
+
+		return { torrents, authKey, passKey };
 	} catch(error) {
 
 		console.log(error);

@@ -38,6 +38,9 @@ Configuration options with defaults shown:
 {
   "apiUser": "", // apiUser credential found in PTP profile security tab.
   "apiKey": "", // apiKey credential found in PTP profile security tab.
+  "interval": -1 // Interval, in minutes, that you'd like to run the script at. 
+  "downloadPath": -1, // Path to download .torrent files to. Optional.
+  "discordWebhookUrl": -1, // Discord webhook URI. Optional.
   "minseeders": -1, // Minimum amount of seeders. Set to -1 for unlimited.
   "maxseeders": -1, // Maximum amount of seeders. Set to -1 for unlimited.
   "minleechers": -1, // Minimum amount of leechers. Set to -1 for unlimited.
@@ -45,15 +48,11 @@ Configuration options with defaults shown:
   "minsize": -1, // Minimum size in megabytes. Set to -1 for unlimited.
   "maxsize": -1, // Maximum size in megabytes. Set to -1 for unlimited.
   "maxAge": -1, // Maximum time in minutes since torrent was uploaded. See below note.
-  "releaseYear": -1, // Filter by release year. Comma separated list of years.
-  "imdbRating": -1, // Filter by minimum IMDB rating.
-  "resolution": -1, // Filter by resolution. Comma separated list. See below for possible values.
-  "codec": -1, // Filter by codex. Comma separated list. See below for possible values.
-  "container": -1, // Filter by container. Comma separated list. See below for possible values.
-  "source": -1, // Filter by source. Comma separated list. See below for possible values.
-  "downloadPath": "", // Path to download .torrent files to. Optional.
-  "discordWebhookUrl": "", // Discord webhook URI. Optional.
-  "interval": -1 // Interval, in minutes, that you'd like to run the script at. 
+  "resolution": -1, // Filter by resolution. 
+  "codec": -1, // Filter by codex. 
+  "container": -1, // Filter by container. 
+  "source": -1, // Filter by source. 
+  "relaseGroup": -1 // Filter by release group.
 }
 ```
 
@@ -64,6 +63,10 @@ Set `maxAge` to filter freeleech torrents by upload date, in minutes. Be aware t
 ### Discord notifications
 
 Create a Webhook URL for a Discord channel and place it as `discordWebhookUrl` in your config file to be notified of grabbed torrents.
+
+### Release Name Filtering
+
+Create filters for release names based on `String.includes` or regular expression matching. 
 
 ### Filter Options
 

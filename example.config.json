@@ -1,6 +1,9 @@
 {
 	"apiUser": "",
 	"apiKey": "",
+	"interval": -1,
+	"downloadPath": -1,
+	"discordWebhookUrl": -1
 	"minSeeders": -1,
 	"maxSeeders": -1,
 	"minLeechers": -1,
@@ -8,13 +11,9 @@
 	"minSize": -1,
 	"maxSize": -1,
 	"maxAge": -1,
-	"releaseYear": -1,
 	"resolution": -1,
 	"codec": -1,
 	"container": -1,
 	"source": -1,
-	"imdbRating": -1,
-	"interval": -1,
-	"downloadPath": "",
-	"discordWebhookUrl": ""
+	"releaseGroup": -1
 }
