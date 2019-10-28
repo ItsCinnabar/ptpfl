@@ -293,7 +293,7 @@ exports.fetchTorrents = async (config, ignoreFilters) => {
 			passKey = json.PassKey;
 
 			if (pageNumber < totalPages) {
-				return await fetchTorrents(pageNumber + 1);
+				await fetchTorrents(pageNumber + 1);
 			}
 		})(1);
 
