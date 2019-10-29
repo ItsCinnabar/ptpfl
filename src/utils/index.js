@@ -108,57 +108,43 @@ exports.torrentMatchesFilters = (torrent, config) => {
 	}
 
 	if (config.minSeeders !== -1) {
-		if (torrent.Seeders >= config.minSeeders) {
-			isMatch = true;
-		} else {
+		if (torrent.Seeders < config.minSeeders) {
 			return false;
 		}
 	}
 
 	if (config.maxSeeders !== -1) {
-		if(torrent.Seeders <= config.maxSeeders) {
-			isMatch = true;
-		} else {
+		if(torrent.Seeders > config.maxSeeders) {
 			return false;
 		}
 	}
 
 	if (config.minLeechers !== -1) {
-		if(torrent.Leechers >= config.minLeechers) {
-			isMatch = true;
-		} else {
+		if(torrent.Leechers < config.minLeechers) {
 			return false;
 		}
 	}
 
 	if (config.maxLeechers !== -1) {
-		if(torrent.Leechers <= config.maxLeechers) {
-			isMatch = true;
-		} else {
+		if(torrent.Leechers > config.maxLeechers) {
 			return false;
 		}
 	}
 
 	if (config.minSize !== -1) {
-		if(torrent.Size >= minSize) {
-			isMatch = true;
-		} else {
+		if(torrent.Size < minSize) {
 			return false;
 		}
 	}
 
 	if (config.maxSize !== -1) {
-		if(torrent.Size <= maxSize) {
-			isMatch = true;
-		} else {
+		if(torrent.Size > maxSize) {
 			return false;
 		}
 	}
 
 	if (config.maxAge !== -1) {
-		if(!isOlderThan(torrent.UploadTime, config.maxAge)) {
-			isMatch = true;
-		} else {
+		if(isOlderThan(torrent.UploadTime, config.maxAge)) {
 			return false;
 		}
 	}
@@ -166,9 +152,7 @@ exports.torrentMatchesFilters = (torrent, config) => {
 	if (config.resolution !== -1 && config.resolution.length) {
 		const resolutions = config.resolution.includes(',') ? config.resolution.split(',') : [config.resolution];
 
-		if (resolutions.find(resolution => resolution.trim().toLowerCase() === torrent.Resolution.toLowerCase())) {
-			isMatch = true;
-		} else {
+		if (!resolutions.find(resolution => resolution.trim().toLowerCase() === torrent.Resolution.toLowerCase())) {
 			return false;
 		}
 	}
@@ -176,9 +160,7 @@ exports.torrentMatchesFilters = (torrent, config) => {
 	if (config.codec !== -1 && config.codec.length) {
 		const codecs = config.codec.includes(',') ? config.codec.split(',') : [config.codec];
 
-		if (codecs.find(codec => codec.trim().toLowerCase() === torrent.Codec.toLowerCase())) {
-			isMatch = true;
-		} else {
+		if (!codecs.find(codec => codec.trim().toLowerCase() === torrent.Codec.toLowerCase())) {
 			return false;
 		}
 	}
@@ -186,9 +168,7 @@ exports.torrentMatchesFilters = (torrent, config) => {
 	if (config.container !== -1 && config.container.length) {
 		const containers = config.container.includes(',') ? config.container.split(',') : [config.container];
 
-		if (containers.find(container => container.trim().toLowerCase() === torrent.Container.toLowerCase())) {
-			isMatch = true;
-		} else {
+		if (!containers.find(container => container.trim().toLowerCase() === torrent.Container.toLowerCase())) {
 			return false;
 		}
 	}
@@ -196,9 +176,7 @@ exports.torrentMatchesFilters = (torrent, config) => {
 	if (config.source !== -1 && config.source.length) {
 		const sources = config.source.includes(',') ? config.source.split(',') : [config.source];
 
-		if (sources.find(source => source.trim().toLowerCase() === torrent.Source.toLowerCase())) {
-			isMatch = true;
-		} else {
+		if (!sources.find(source => source.trim().toLowerCase() === torrent.Source.toLowerCase())) {
 			return false;
 		}
 	}
@@ -206,52 +184,10 @@ exports.torrentMatchesFilters = (torrent, config) => {
 	if (config.releaseGroup !== -1 && config.releaseGroup.length) {
 		const releaseGroups = config.releaseGroup.includes(',') ? config.releaseGroup.split(',') : [config.releaseGroup];
 
-		if (torrent.ReleaseGroup !== null) {
-			if (releaseGroups.find(releaseGroup => releaseGroup.trim().toLowerCase() === torrent.ReleaseGroup.toLowerCase())) {
-				isMatch = true;
-			} else {
-				return false;
-			}
-		} else {
+		if (torrent.ReleaseGroup === null) return false;
+
+		if (!releaseGroups.find(releaseGroup => releaseGroup.trim().toLowerCase() === torrent.ReleaseGroup.toLowerCase())) {
 			return false;
-		}
-	}
-
-	return isMatch;
-
-	if (config.releaseName) {
-		if (config.releaseName.regexes && config.releaseName.regexes.length) {
-			if (config.releaseName.regexes.find(expression => {
-				try {
-					const regex = new RegExp(expression, 'gi');
-
-					console.log(regex.test(torrent.ReleaseName));
-
-					return regex.test(torrent.ReleaseName);
-				} catch(error) {
-					console.log(error);
-					console.log(`\nThe regular expression ${expression} is not valid. Please modify and try again.`);
-					process.exit();
-				}
-			})) {
-				isMatch = true;
-			} else {
-				return false;
-			}
-		}
-
-		if (config.releaseName.strings && config.releaseName.strings.length) {
-			const releaseName = torrent.ReleaseName.toLowerCase();
-
-			if (config.releaseName.strings.find(string => {
-				string = string.toLowerCase();
-
-				return releaseName.includes(string);
-			})) {
-				isMatch = true;
-			} else {
-				return false;
-			}
 		}
 	}
 
