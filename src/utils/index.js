@@ -30,15 +30,22 @@ const getConfig = () => {
 };
 
 exports.validateConfig = async () => {
-	const config = getConfig(),
-		error = 'Specified downloadPath directory does not exist. Please check your config.';
+	const configKeys = ['apiUser','apiKey','interval','downloadPath','discordWebhookUrl','minSeeders','maxSeeders','minLeechers','maxLeechers','minSize','maxSize','maxAge','resolution','codec','container','source','releaseGroup'],
+		config = getConfig(),
+		configFormatError = 'The format of config.json has changed. Please ensure it contains the exact same format and properties as example.config.json',
+		downloadPathError = 'Specified downloadPath directory does not exist. Please check your config.';
 
 	if (!config.downloadPath) return config;
 
 	const folderExists = await directoryExists(config.downloadPath);
 
 	if (!folderExists) {
-		console.log(error);
+		console.log(downloadPathError);
+		process.exit();
+	}
+
+	if (configKeys.length !== Object.keys(config).length || !configKeys.every(key => config[key] !== undefined)) {
+		console.log(configFormatError);
 		process.exit();
 	}
 
