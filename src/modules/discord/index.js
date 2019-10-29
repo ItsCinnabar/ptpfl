@@ -20,7 +20,7 @@ const getDiscordClient = (() => {
 })();
 
 module.exports = async ({ torrent, authKey, passKey }, config) => {
-	if (!config.discordWebhookUrl) {
+	if (config.discordWebhookUrl === -1) {
 		return;
 	}
 
