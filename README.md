@@ -82,3 +82,9 @@ These options can be specified in a comma separated list within a string. For ex
 |1080i|BD50| |HD-DVD|
 |1080p|BD66| |Blu-ray|
 |2160p|BD100| | |
+
+### Release Group
+
+Release groups can be specified in a comma separated string. 
+
+E.g., `"releaseGroup": "ntg,epsilon"`

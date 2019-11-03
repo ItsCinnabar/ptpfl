@@ -35,6 +35,11 @@ exports.validateConfig = async () => {
 		configFormatError = 'The format of config.json has changed. Please ensure it contains the exact same format and properties as example.config.json',
 		downloadPathError = 'Specified downloadPath directory does not exist. Please check your config.';
 
+	if (!config.apiUser || !config.apiKey) {
+		console.log('Please ensure you\'ve added your ApiUser and ApiKey details from your PTP profile to the config file. See the example config file for details.');
+		process.exit();
+	}
+
 	if (!config.downloadPath) return config;
 
 	const folderExists = await directoryExists(config.downloadPath);
@@ -207,13 +212,8 @@ const getTorrentsFromResponse = data => {
 	}).filter(torrent => torrent.FreeleechType == 'Freeleech');
 };
 
-exports.fetchTorrents = async (config, ignoreFilters) => {
+exports.fetchTorrents = async config => {
 	let authKey, passKey, torrents = [];
-
-	if (!config.apiUser || !config.apiKey) {
-		console.log('Please ensure you\'ve added your ApiUser and ApiKey details from your PTP profile to the config file. See the example config file for details.');
-		process.exit();
-	}
 
 	try {
 		await (async function fetchTorrents(pageNumber) {
@@ -232,11 +232,11 @@ exports.fetchTorrents = async (config, ignoreFilters) => {
 
 			torrents = torrents.concat(getTorrentsFromResponse(json));
 
-			authKey = json.AuthKey;
-			passKey = json.PassKey;
-
 			if (pageNumber < totalPages) {
 				await fetchTorrents(pageNumber + 1);
+			} else {
+				authKey = json.AuthKey;
+				passKey = json.PassKey;
 			}
 		})(1);
 
