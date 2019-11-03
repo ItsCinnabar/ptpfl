@@ -85,6 +85,6 @@ These options can be specified in a comma separated list within a string. For ex
 
 ### Release Group
 
-Release groups can be specified in a comma separated string. 
+Release groups can be specified in a comma separated list within a string. 
 
 E.g., `"releaseGroup": "ntg,epsilon"`
