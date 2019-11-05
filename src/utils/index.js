@@ -40,17 +40,19 @@ exports.validateConfig = async () => {
 		process.exit();
 	}
 
-	if (!config.downloadPath) return config;
+	if (configKeys.length !== Object.keys(config).length || !configKeys.every(key => config[key] !== undefined)) {
+		console.log(configFormatError);
+		process.exit();
+	}
+
+	if (!config.downloadPath) {
+		return config;
+	}
 
 	const folderExists = await directoryExists(config.downloadPath);
 
 	if (!folderExists) {
 		console.log(downloadPathError);
-		process.exit();
-	}
-
-	if (configKeys.length !== Object.keys(config).length || !configKeys.every(key => config[key] !== undefined)) {
-		console.log(configFormatError);
 		process.exit();
 	}
 
