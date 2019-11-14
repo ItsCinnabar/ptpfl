@@ -59,7 +59,7 @@ exports.validateConfig = async () => {
 	return config;
 };
 
-const getCache = () => {
+exports.getCache = () => {
 	try {
 		const cache = importFresh(cachePath);
 		return JSON.parse(JSON.stringify(cache));
@@ -73,9 +73,7 @@ const getCache = () => {
 	}
 };
 
-exports.writeTorrentCache = torrents => {
-	const cache = getCache();
-
+exports.writeTorrentCache = (cache, torrents) => {
 	cache.freeleech = cache.freeleech.concat(torrents
 		.map(torrent => cache.freeleech.includes(torrent.Id) ? null : torrent.Id)
 		.filter(id => id !== null));
@@ -102,10 +100,8 @@ const isOlderThan = (date, minutes) => {
 	return new Date(date) < time;
 };
 
-exports.torrentMatchesFilters = (torrent, config) => {
+exports.torrentMatchesFilters = (torrent, config, cache) => {
 	let isMatch = true;
-
-	const cache = getCache();
 
 	const minSize = config.minsize === -1 ? -1 : Number(config.minsize) * 1024 * 1024,
 		maxSize = config.maxsize === -1 ? -1 : Number(config.maxsize) * 1024 * 1024;
