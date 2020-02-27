@@ -1,0 +1,15 @@
+while [ 1 ]
+do
+ open=$(quota -s | awk 'FNR==3 {print (substr($3,1,length($3)-1))-(substr($2,1,length($2)-1))}')
+ if [ $open -gt 350 ]
+ then
+  npm start || true
+  echo "$open gb open. ran script."
+ else
+  echo "sleeping"
+  sleep 600
+  npm run fill-cache || true
+  echo "$open gb open, we slept for 600s and filled cache"
+ fi
+ sleep 80
+done
