@@ -1,6 +1,10 @@
+###THIS MAY GET YOUR PTP ACCOUNT BANNED BE FOREWARNED
+
 # PassThePopcorn Freeleech Automator
 
 A node.js script that automates the downloading of PassThePopcorn freeleech torrents.
+
+Customized for USB. Run with Custom_Run_Script.
 
 ### Feature Requests
 
