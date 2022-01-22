@@ -15,6 +15,6 @@
     "discord.js": "^11.5.1",
     "get-user-locale": "^1.2.0",
     "import-fresh": "^3.1.0",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^3.1.1"
   }
 }
